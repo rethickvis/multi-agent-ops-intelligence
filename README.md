@@ -14,7 +14,7 @@ The graph terminates when the task is completed, fails, or requires human approv
 
 ## Dataset
 
-The scenarios used for benchmarking are synthetic, generated locally, but modeled on the item-store-day structure of the public M5 Forecasting - Accuracy dataset: roughly 3,000 products across 10 stores in California, Texas, and Wisconsin, with several years of daily unit sales per item. Sell-through-drop investigations such as the SKU 48213 example in this README are built by sampling day-over-day demand swings at that same store-item-day granularity and asking the supervisor to route the resulting task to the correct agent. The 200 labeled routing scenarios in tests/test_scenarios.py follow the same structure. The dataset itself is not bundled in this repository; see Credits below for the source if you want to test against the real values instead of the synthetic generator.
+The scenarios used for benchmarking are synthetic, generated locally, but modeled on the item-store-day structure of the public [M5 Forecasting - Accuracy dataset](https://www.kaggle.com/competitions/m5-forecasting-accuracy): roughly 3,000 products across 10 stores in California, Texas, and Wisconsin, with several years of daily unit sales per item. Sell-through-drop investigations such as the SKU 48213 example in this README are built by sampling day-over-day demand swings at that same store-item-day granularity and asking the supervisor to route the resulting task to the correct agent. The 200 labeled routing scenarios in tests/test_scenarios.py follow the same structure. The dataset itself is not bundled in this repository; see Credits below for the source if you want to test against the real values instead of the synthetic generator.
 
 ## Results and impact
 
@@ -71,10 +71,14 @@ docker build -t ghcr.io/rethickvis/multi-agent-ops-intelligence:latest .
 kubectl apply -f k8s/deployment.yaml
 ```
 
+## Related project
+
+See [distributed-ai-data-pipeline](https://github.com/rethickvis/distributed-ai-data-pipeline) for the upstream data pipeline that feeds curated retail datasets to this platform's Cortex Search index.
+
 ## Notes
 
 This repository is a reference implementation of the architecture described on my resume. The Cortex and enterprise API credentials in `app/main.py` are placeholders and should be replaced with real values loaded from environment variables or a secrets manager before deploying.
 
 ## Credits
 
-Benchmark scenario structure is modeled on the M5 Forecasting - Accuracy dataset, released by Walmart and the University of Nicosia via Kaggle (Makridakis, Spiliotis, and Assimakopoulos, 2020). It is used here only as a realistic reference schema for synthetic testing and is not redistributed in this repository.
+Benchmark scenario structure is modeled on the [M5 Forecasting - Accuracy dataset](https://www.kaggle.com/competitions/m5-forecasting-accuracy), released by Walmart and the University of Nicosia via Kaggle (Makridakis, Spiliotis, and Assimakopoulos, 2020). It is used here only as a realistic reference schema for synthetic testing and is not redistributed in this repository.
