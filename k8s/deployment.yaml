@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ops-intelligence-api
+  labels:
+    app: ops-intelligence-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ops-intelligence-api
+  template:
+    metadata:
+      labels:
+        app: ops-intelligence-api
+    spec:
+      containers:
+        - name: ops-intelligence-api
+          image: ghcr.io/rethickvis/multi-agent-ops-intelligence:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: ops-intelligence-secrets
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ops-intelligence-api
+spec:
+  selector:
+    app: ops-intelligence-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
